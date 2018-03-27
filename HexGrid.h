@@ -58,95 +58,6 @@ enum HexOrientation_t {
 };
 
 // ================================================================
-// Point
-// ================================================================
-// Точка на плоскости
-// ================================================================
-class Point {
-public:
-    Point( double x_, double y_ ) : x( x_ ), y( y_ ) {}
-    const double x;
-    const double y;
-};
-
-// ================================================================
-// Point
-// ================================================================
-// Операции над точками
-// ================================================================
-bool operator ==( const Point& left, const Point& right );
-bool operator !=( const Point& left, const Point& right );
-Point operator +( const Point& left, const Point& right );
-Point operator -( const Point& left, const Point& right );
-Point operator *( const Point& left, int right );
-ostream& operator <<( ostream& os, const Point& right );
-
-// ================================================================
-// HexOffset
-// ================================================================
-// Офсетные координаты
-// ================================================================
-class HexOffset {
-public:
-    HexOffset( int col_, int row_ ) : col( col_ ), row( row_ ) {}
-    const int col;
-    const int row;
-};
-
-// ================================================================
-// HexOffset
-// ================================================================
-// Операции над офсетными координатами
-// ================================================================
-bool operator ==( const HexOffset& left, const HexOffset& right );
-bool operator !=( const HexOffset& left, const HexOffset& right );
-ostream& operator <<( ostream& os, const HexOffset& right );
-
-// ================================================================
-// HexCube
-// ================================================================
-// Кубические координаты
-// ================================================================
-class HexCube {
-public:
-    HexCube( int q_, int r_ ) : coord( { q_, r_, -q_ - r_ } ) {}
-    inline int Q( void ) const { return coord[ 0 ]; }
-    inline int R( void ) const { return coord[ 1 ]; }
-    inline int S( void ) const { return coord[ 2 ]; }
-    const vector<int> coord;
-};
-
-// ================================================================
-// HexCube
-// ================================================================
-// Операции над кубическими координатами
-// ================================================================
-bool operator ==( const HexCube& left, const HexCube& right );
-bool operator !=( const HexCube& left, const HexCube& right );
-HexCube operator +( const HexCube& left, const HexCube& right );
-HexCube operator -( const HexCube& left, const HexCube& right );
-HexCube operator *( const HexCube& left, int right );
-ostream& operator <<( ostream& os, const HexCube& right );
-
-// ================================================================
-// FractionalCube
-// ================================================================
-// Кубические координаты (дробные)
-// ================================================================
-class FractionalCube {
-public:
-    FractionalCube( double q_, double r_ ) : coord( { q_, r_, -q_ - r_ } ) {}
-    FractionalCube( double q_, double r_, double s_ );
-    inline double Q( void ) const { return coord[ 0 ]; }
-    inline double R( void ) const { return coord[ 1 ]; }
-    inline double S( void ) const { return coord[ 2 ]; }
-    const vector<double> coord;
-
-    // Округление кубических координат
-    HexCube Round( int round_algorithm ) const;
-};
-
-// ================================================================
 // HEX_ORIENTATION_MATRIX_1
 // ================================================================
 // Матрица для преобразования координат гекса в координаты на плоскости
@@ -206,14 +117,130 @@ public:
 };
 
 // ================================================================
+// Point
+// ================================================================
+// Точка на плоскости
+// ================================================================
+class Point {
+public:
+    Point( double x_, double y_ ) : x( x_ ), y( y_ ) {}
+    const double x;
+    const double y;
+};
+
+// ================================================================
+// Point
+// ================================================================
+// Операции над точками
+// ================================================================
+bool operator ==( const Point& left, const Point& right );
+bool operator !=( const Point& left, const Point& right );
+Point operator +( const Point& left, const Point& right );
+Point operator -( const Point& left, const Point& right );
+Point operator *( const Point& left, int right );
+ostream& operator <<( ostream& os, const Point& right );
+
+// ================================================================
+// OffsetHex
+// ================================================================
+// Офсетные координаты
+// ================================================================
+class OffsetHex {
+public:
+    OffsetHex( int col_, int row_ ) : col( col_ ), row( row_ ) {}
+    const int col;
+    const int row;
+};
+
+// ================================================================
+// OffsetHex
+// ================================================================
+// Операции над офсетными координатами
+// ================================================================
+bool operator ==( const OffsetHex& left, const OffsetHex& right );
+bool operator !=( const OffsetHex& left, const OffsetHex& right );
+ostream& operator <<( ostream& os, const OffsetHex& right );
+
+// ================================================================
+// Hex
+// ================================================================
+// Гекс (Кубические координаты)
+// ================================================================
+class Hex {
+public:
+    Hex( int q_, int r_ ) : coord( { q_, r_, -q_ - r_ } ) {}
+    inline int Q( void ) const { return coord[ 0 ]; }
+    inline int R( void ) const { return coord[ 1 ]; }
+    inline int S( void ) const { return coord[ 2 ]; }
+    const vector<int> coord;
+
+    // Соседний гекс
+    Hex HexNeighbor( int direction ) const;
+
+    // Соседние гексы
+    vector<Hex> HexNeighbors() const;
+
+    // Диагональный гекс
+    Hex HexDiagonal( int direction ) const;
+
+    // Диагональные гексы
+    vector<Hex> HexDiagonals() const;
+
+    // Координаты гекса => Координаты на плоскости (координаты центра)
+    Point HexToPixel( const HexLayout& layout ) const;
+
+    // Угол гекса на плоскости
+    Point HexCorner( const HexLayout& layout, int corner ) const;
+
+    // Углы гекса на плоскости
+    vector<Point> HexCorners( const HexLayout& layout ) const;
+
+    // Поворот гекса влево
+    Hex HexRotateLeft() const;
+
+    // Поворот гекса вправо
+    Hex HexRotateRight() const;
+};
+
+// ================================================================
+// Hex
+// ================================================================
+// Операции над кубическими координатами
+// ================================================================
+bool operator ==( const Hex& left, const Hex& right );
+bool operator !=( const Hex& left, const Hex& right );
+Hex operator +( const Hex& left, const Hex& right );
+Hex operator -( const Hex& left, const Hex& right );
+Hex operator *( const Hex& left, int right );
+ostream& operator <<( ostream& os, const Hex& right );
+
+// ================================================================
+// FractionalHex
+// ================================================================
+// Дробные координаты (Кубические)
+// ================================================================
+class FractionalHex {
+public:
+    FractionalHex( double q_, double r_ ) : coord( { q_, r_, -q_ - r_ } ) {}
+    FractionalHex( double q_, double r_, double s_ );
+    inline double Q( void ) const { return coord[ 0 ]; }
+    inline double R( void ) const { return coord[ 1 ]; }
+    inline double S( void ) const { return coord[ 2 ]; }
+    const vector<double> coord;
+
+    // Округление дробных координат
+    Hex Round( int round_algorithm ) const;
+};
+
+// ================================================================
 // HexDistance
 // ================================================================
 // Расстояние в гексах
 // ================================================================
-inline unsigned HexDistance( const HexCube& cube_a, const HexCube& cube_b ) {
-    return ( abs( cube_a.Q() - cube_b.Q() )
-             + abs( cube_a.R() - cube_b.R() )
-             + abs( cube_a.S() - cube_b.S() ) ) / 2.0L;
+inline unsigned HexDistance( const Hex& hex_a, const Hex& hex_b ) {
+    return ( abs( hex_a.Q() - hex_b.Q() )
+             + abs( hex_a.R() - hex_b.R() )
+             + abs( hex_a.S() - hex_b.S() ) ) / 2.0L;
 }
 
 // ================================================================
@@ -221,111 +248,48 @@ inline unsigned HexDistance( const HexCube& cube_a, const HexCube& cube_b ) {
 // ================================================================
 // Направление
 // ================================================================
-const HexCube& HexDirection( int direction );
-
-// ================================================================
-// HexNeighbor
-// ================================================================
-// Соседний гекс
-// ================================================================
-HexCube HexNeighbor( const HexCube& cube, int direction );
-
-// ================================================================
-// HexNeighbors
-// ================================================================
-// Соседние гексы
-// ================================================================
-vector<HexCube> HexNeighbors( const HexCube& cube );
-
-// ================================================================
-// HexDiagonal
-// ================================================================
-// Диагональный гекс
-// ================================================================
-HexCube HexDiagonal( const HexCube& cube, int direction );
-
-// ================================================================
-// HexDiagonals
-// ================================================================
-// Диагональные гексы
-// ================================================================
-vector<HexCube> HexDiagonals( const HexCube& cube );
-
-// ================================================================
-// HexToPixel
-// ================================================================
-// Координаты гекса => Координаты на плоскости (координаты центра)
-// ================================================================
-Point HexToPixel( const HexLayout& layout, const HexCube& cube );
+const Hex& HexDirection( int direction );
 
 // ================================================================
 // PixelToHex
 // ================================================================
 // Координаты на плоскости => Координаты гекса
 // ================================================================
-FractionalCube PixelToHex( const HexLayout& layout, const Point& pixel );
-
-// ================================================================
-// HexCorner
-// ================================================================
-// Угол гекса на плоскости
-// ================================================================
-Point HexCorner( const HexLayout& layout, const HexCube& cube, int corner );
-
-// ================================================================
-// HexCorners
-// ================================================================
-// Углы гекса на плоскости
-// ================================================================
-vector<Point> HexCorners( const HexLayout& layout, const HexCube& cube );
+FractionalHex PixelToHex( const HexLayout& layout, const Point& pixel );
 
 // ================================================================
 // HexLinearInterpolation
 // ================================================================
 // Линейная интерполяция (Кубические координаты)
 // ================================================================
-FractionalCube HexLinearInterpolation( const HexCube& cube_a, const HexCube& cube_b, double t );
+FractionalHex HexLinearInterpolation( const Hex& hex_a, const Hex& hex_b, double t );
 
 // ================================================================
 // HexLinearInterpolation
 // ================================================================
-// Линейная интерполяция (Кубические координаты)
+// Линейная интерполяция (Дробные координаты)
 // ================================================================
-FractionalCube HexLinearInterpolation( const FractionalCube& cube_a, const FractionalCube& cube_b, double t );
+FractionalHex HexLinearInterpolation( const FractionalHex& hex_a, const FractionalHex& hex_b, double t );
 
 // ================================================================
 // HexLine
 // ================================================================
 // Линия гексов
 // ================================================================
-vector<HexCube> HexLine( const HexCube& cube_a, const HexCube& cube_b, bool use_range, unsigned range );
+vector<Hex> HexLine( const Hex& hex_a, const Hex& hex_b, bool use_range, unsigned range );
 
 // ================================================================
 // Offset_to_Cube
 // ================================================================
 // Офсетные координаты -> Кубические координаты
 // ================================================================
-HexCube Offset_to_Cube( const HexLayout& layout, const HexOffset& offset );
+Hex Offset_to_Cube( const HexLayout& layout, const OffsetHex& offset );
 
 // ================================================================
 // Cube_to_Offset
 // ================================================================
 // Кубические координаты -> Офсетные координаты
 // ================================================================
-HexOffset Cube_to_Offset( const HexLayout& layout, const HexCube& cube );
-
-// ================================================================
-// HexRotateLeft
-// ================================================================
-// Поворот гекса влево
-// ================================================================
-HexCube HexRotateLeft( const HexCube& cube );
-
-// ================================================================
-// HexRotateRight
-// ================================================================
-// Поворот гекса вправо
-// ================================================================
-HexCube HexRotateRight( const HexCube& cube );
+OffsetHex Cube_to_Offset( const HexLayout& layout, const Hex& hex );
 
 #endif /* HEXGRID_H___VLADBOYR */
