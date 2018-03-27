@@ -1,7 +1,7 @@
 /*
  * TestRunner.h
  *
- * Source & Copyright: Coursera. Yandex. Основы разработки на C++: белый пояс
+ * Source & Copyright: Coursera. Yandex. РћСЃРЅРѕРІС‹ СЂР°Р·СЂР°Р±РѕС‚РєРё РЅР° C++: Р±РµР»С‹Р№ РїРѕСЏСЃ
  */
 
 #pragma once
