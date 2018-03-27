@@ -1,4 +1,4 @@
 # HexGrid
-HexGrid
-Сетка из гексов
+HexGrid<br>
+Сетка из гексов<br>
 Source: http://www.redblobgames.com/grids/hexagons/
