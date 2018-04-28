@@ -5,8 +5,8 @@
  */
 
 #pragma once
-#ifndef HEXGRID_H___VLADBOYR
-#define HEXGRID_H___VLADBOYR
+#ifndef HEXGRID_H
+#define HEXGRID_H
 
 #include <cmath>
 #include <map>
@@ -248,4 +248,4 @@ Hex Offset_to_Cube( const HexLayout& layout, const OffsetHex& offset );
 // ================================================================
 OffsetHex Cube_to_Offset( const HexLayout& layout, const Hex& hex );
 
-#endif /* HEXGRID_H___VLADBOYR */
+#endif /* HEXGRID_H */
