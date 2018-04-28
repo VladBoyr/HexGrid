@@ -248,4 +248,4 @@ Hex Offset_to_Cube( const HexLayout& layout, const OffsetHex& offset );
 // ================================================================
 OffsetHex Cube_to_Offset( const HexLayout& layout, const Hex& hex );
 
-#endif /* HEXGRID_H */
+#endif // HEXGRID_H
